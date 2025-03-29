@@ -13,8 +13,11 @@ Este proyecto implementa una API RESTful para la gestión de empresas y sus tran
 ENDPOINTS: 
 
 GET /empresas/con-transferencias,
+
 GET /empresas/adheridas-ultimo-mes,
+
 POST /empresas,
+
 POST /empresas/transferencias
 
 Instar dependencias: npm install
