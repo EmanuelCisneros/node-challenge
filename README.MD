@@ -20,7 +20,7 @@ POST /empresas,
 
 POST /empresas/transferencias
 
-Instar dependencias: npm install
+Instalar dependencias: npm install
 
 Crear un .env para conectar a MongoDB o configs adicionales.
 
