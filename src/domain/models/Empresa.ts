@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { string, z } from "zod"
 
 export const EmpresaSchema = z.object({
   cuit: z.string().min(11).max(11),

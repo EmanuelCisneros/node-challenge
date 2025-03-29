@@ -1,30 +1,27 @@
 import { z } from "zod"
-import { EmpresaModel } from "../../infrastructure/db/models/EmpresaModel"
+import { EmpresaRepository } from "@domain/repositories/EmpresaRepository"
+import { Empresa } from "@domain/models/Empresa"
 
-const EmpresaSchema = z.object({
+const schema = z.object({
   cuit: z.string().length(11, "El CUIT debe tener 11 dígitos"),
   razonSocial: z.string().min(1, "La razón social es obligatoria"),
-  fechaAdhesion: z.date(),
+  fechaAdhesion: z.coerce.date()
 })
 
-type CreateEmpresaDTO = z.infer<typeof EmpresaSchema>
+type EmpresaDTO = z.infer<typeof schema>
 
 export class CreateEmpresaUseCase {
-  async execute(data: CreateEmpresaDTO) {
-    const parsed = EmpresaSchema.safeParse(data)
+  constructor(private readonly empresaRepo: EmpresaRepository) {}
 
+  async execute(data: EmpresaDTO): Promise<Empresa> {
+    const parsed = schema.safeParse(data)
     if (!parsed.success) {
-      throw new Error(parsed.error.errors.map(err => err.message).join(", "))
+      throw new Error(parsed.error.errors.map(e => e.message).join(", "))
     }
 
-    const exists = await EmpresaModel.findOne({ cuit: data.cuit })
-    if (exists) {
-      throw new Error("La empresa ya está registrada.")
-    }
+    const exists = await this.empresaRepo.findByCuit(data.cuit)
+    if (exists) throw new Error("La empresa ya está registrada.")
 
-    const empresa = new EmpresaModel(data)
-    await empresa.save()
-
-    return empresa.toObject()
+    return await this.empresaRepo.save(data)
   }
 }
