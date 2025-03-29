@@ -10,6 +10,13 @@ Este proyecto implementa una API RESTful para la gestión de empresas y sus tran
 - Validaciones con `zod`.
 - Testing con `jest`.
 
+ENDPOINTS: 
+
+GET /empresas/con-transferencias,
+GET /empresas/adheridas-ultimo-mes,
+POST /empresas,
+POST /empresas/transferencias
+
 Instar dependencias: npm install
 
 Crear un .env para conectar a MongoDB o configs adicionales.
